@@ -1,0 +1,9 @@
+Routes
+- Companies
+    - Lists companies with descriptions
+- Jobs
+    - List of Jobs, each with own information
+- Profile
+    - Form that enables users to change name and email but not username
+- Home
+    - leads to sign up or login 
