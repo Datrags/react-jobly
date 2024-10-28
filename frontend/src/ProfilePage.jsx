@@ -1,6 +1,7 @@
 import {jwtDecode} from "jwt-decode";
-
-function ProfilePage ({update}) {
+import { useNavigate } from "react-router";
+import { useEffect, useState } from "react";
+function ProfilePage ({update, user}) {
     
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
@@ -16,12 +17,12 @@ function ProfilePage ({update}) {
     const {username} = jwtDecode(token);
     
     //TODO: API call to get user data
-    let {firstName, lastName, email} = {};
+    let {firstName, lastName, email} = {user};
 
     const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        email: ''
+        firstName,
+        lastName,
+        email
       });
 
     const handleChange = (event) => {
@@ -34,11 +35,18 @@ function ProfilePage ({update}) {
 
     const handleSubmit = async (event) => {
         event.preventDefault(); // Prevent the default form submission
+        try {
+            await update(formData);
+            console.log("update sucessful")
+            alert("Info Updated")
+        } catch(e) {
+            console.error(e);
+        }
     }
 
     return(<>
         <h1>{username}</h1>
-        <form>
+        <form onSubmit={handleSubmit}>
             <label htmlFor="firstName">First Name: </label>
             <input id="firstName" type="text" placeholder={firstName} value={formData.firstName} onChange={handleChange}/>
             <label htmlFor="lastName">Last Name: </label>

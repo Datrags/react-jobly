@@ -1,4 +1,5 @@
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 // const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
 const BASE_URL = "http://localhost:3001";
@@ -14,6 +15,7 @@ console.log("base url", BASE_URL);
 class JoblyApi {
   // the token for interactive with the API will be stored here.
   static token;
+  static authToken;
 
   static async request(endpoint, data = {}, method = "get") {
     console.debug("API Call:", endpoint, data, method);
@@ -71,6 +73,7 @@ class JoblyApi {
   static async login({ username, password }) {
     const res = await this.request("auth/token", { username, password }, "post");
     JoblyApi.token = res.token; // Save the token
+    console.log("from login", jwtDecode(JoblyApi.token));
     return res.token;
   }
 
@@ -79,17 +82,32 @@ class JoblyApi {
     JoblyApi.token = null; // Clear the token
   }
 
-  //update user
-  static async update(username, data) {
-    const res = await this.request(`user/${username}`, data, "patch");
+  //Get user info
+  static async getUser(username) {
+    if (JoblyApi.token === null || JoblyApi.token === 'null') {
+      return null;
+    }
+    console.log("current info",jwtDecode(JoblyApi.token));
+    const res = await this.request(`users/${username}`);
     return res.user;
   }
+
+  //update user
+  static async updateUser(username, data) {
+    const res = await this.request(`users/${username}`, data, "patch");
+    return res.user;
+  }
+
+  static async applyJob() {
+    const res = await this.request(`users/${username}/jobs/${jobid}`, method="post")
+  }
+
 
 }
 
 // for now, put token ("testuser" / "password" on class)
-JoblyApi.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZ" +
-    "SI6InRlc3R1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTU5ODE1OTI1OX0." +
-    "FtrMwBQwe6Ue-glIFgz_Nf8XxRT2YecFCiSpYL0fCXc";
+// JoblyApi.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZ" +
+//     "SI6InRlc3R1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTU5ODE1OTI1OX0." +
+//     "FtrMwBQwe6Ue-glIFgz_Nf8XxRT2YecFCiSpYL0fCXc";
 
 export default JoblyApi;

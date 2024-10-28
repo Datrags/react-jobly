@@ -9,6 +9,7 @@ function JobCard({job}) {
                 <p>{job.description}</p>
                 <p>{job.salary}</p>
                 <p>{job.equity}</p>
+                <button>Apply</button>
             </div>
         
     )

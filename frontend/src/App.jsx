@@ -9,6 +9,7 @@ import LoginForm from './LoginForm';
 import SignUpForm from './SignUpForm';
 import Navbar from './Navbar';
 import { jwtDecode } from 'jwt-decode';
+import ProfilePage from './ProfilePage';
 function App() {
  
   const [companies, setCompanies] = useState(null);
@@ -16,6 +17,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
+  const [user, setUser] = useState(null);
 
   const login = async (info) => {
     await JoblyApi.login(info);
@@ -34,6 +36,10 @@ function App() {
     setToken(JoblyApi.token);
     localStorage.setItem("token", token);
     console.log("Sign up sucessfully", token);
+  }
+
+  const update = async (info) => {
+    await JoblyApi.updateUser(currentUser, info);
   }
   useEffect(() => {
     const fetchComps = async () => {
@@ -64,9 +70,13 @@ function App() {
     const fetchUserName = async () => {
       try {
         const storedToken = localStorage.getItem("token");
-        if (storedToken) {
+        if (storedToken && storedToken != 'null') {
+          JoblyApi.token = storedToken;
           setToken(storedToken);
+          console.log("stored token",storedToken, "|", jwtDecode(storedToken));
           setCurrentUser(jwtDecode(token).username);
+          setUser(JoblyApi.getUser(currentUser));
+          
         }
         
       } catch (err) {
@@ -88,7 +98,7 @@ function App() {
           <Route path='/companies/:handle' element={<CompanyDetail/>}></Route>
           <Route path='/login' element={<LoginForm login={login}/>}></Route>
           <Route path='/signup' element={<SignUpForm signup={signup}/>}></Route>
-          <Route path='/profile'></Route>
+          <Route path='/profile' element={<ProfilePage update={update} user={user}/>}></Route>
           <Route path='/jobs' element={<JobList jobs={jobs}/>}></Route>
           <Route path='*' element={<h1>404 Not Found</h1>}></Route>
         </Routes>
