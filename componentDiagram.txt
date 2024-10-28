@@ -1,9 +1,19 @@
 Routes
 - Companies
     - Lists companies with descriptions
+    - Components Needed:
+        -  CompanyCard (name, info, link to jobs)
+        -  CompanyDetails (name, desc, jobs list ( JobCards component))
+        -  CompanyList (list all companies)
+
 - Jobs
-    - List of Jobs, each with own information
+    - List of all Jobs, each with own information
+    - Components Needed: 
+        - JobCards (title, company, salary, equity, apply button)
+
 - Profile
     - Form that enables users to change name and email but not username
+    - Components: Profile Form (First Name, Last Name, Email)
 - Home
-    - leads to sign up or login 
+    - leads to sign up or login
+    - if logged in, says hello

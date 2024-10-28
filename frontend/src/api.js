@@ -1,7 +1,8 @@
 import axios from "axios";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
-
+// const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
+const BASE_URL = "http://localhost:3001";
+console.log("base url", BASE_URL);
 /** API Class.
  *
  * Static class tying together methods used to get/send to to the API.
@@ -43,10 +44,46 @@ class JoblyApi {
     return res.company;
   }
 
-  // obviously, you'll add a lot here ...
+//gets all companies
+  static async getCompanies() {
+    let res = await this.request(`companies/`);
+    return res.companies;
+  }
+//Gets all Jobs
+  static async getJobs() {
+    let res = await this.request("jobs/");
+    return res.jobs;
+  }
+ //User Sign UP
+  static async signup({ username, password, firstName, lastName, email }) {
+    const res = await this.request("auth/register", {
+      username,
+      password,
+      firstName,
+      lastName,
+      email,
+    }, "post");
+    JoblyApi.token = res.token; // Save the token
+    return res.token;
+  }
+
+  //User Login
+  static async login({ username, password }) {
+    const res = await this.request("auth/token", { username, password }, "post");
+    JoblyApi.token = res.token; // Save the token
+    return res.token;
+  }
+
+  // User logout
+  static logout() {
+    JoblyApi.token = null; // Clear the token
+  }
+
 }
 
 // for now, put token ("testuser" / "password" on class)
 JoblyApi.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZ" +
     "SI6InRlc3R1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTU5ODE1OTI1OX0." +
     "FtrMwBQwe6Ue-glIFgz_Nf8XxRT2YecFCiSpYL0fCXc";
+
+export default JoblyApi;

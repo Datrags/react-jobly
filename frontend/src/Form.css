@@ -1,0 +1,10 @@
+form {
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Stack children vertically */
+    max-width: 400px; /* Optional: Set a max width for the form */
+    margin: 0 auto; /* Center the form horizontally */
+    padding: 20px; /* Add some padding */
+    border: 1px solid #271414; /* Optional: Add a border */
+    border-radius: 8px; /* Optional: Rounded corners */
+    background-color: #170c0c; /* Optional: Background color */
+  }

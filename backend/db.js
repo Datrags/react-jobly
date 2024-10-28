@@ -1,7 +1,7 @@
 "use strict";
 /** Database setup for jobly. */
 const { Client } = require("pg");
-const { getDatabaseUri } = require("./config");
+const { getDatabaseUri, DATABASE_HOST } = require("./config");
 
 let db;
 
@@ -14,7 +14,7 @@ if (process.env.NODE_ENV === "production") {
   });
 } else {
   db = new Client({
-    connectionString: getDatabaseUri()
+    connectionString: getDatabaseUri(),
   });
 }
 
