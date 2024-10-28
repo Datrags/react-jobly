@@ -10,6 +10,7 @@ Routes
     - List of all Jobs, each with own information
     - Components Needed: 
         - JobCards (title, company, salary, equity, apply button)
+        - JobList (lists all jobs)
 
 - Profile
     - Form that enables users to change name and email but not username
